@@ -1,0 +1,22 @@
+{
+  "name": "lambda_node",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "build": "rm -rf package/* && HASH=$(openssl rand -hex 3) && tsc && zip -qr package/package-$HASH.zip dist/ node_modules/ package.json && echo \"\nBuilt package/package-$HASH.zip successfully\"",
+    "deploy": "node scripts/deploy.js",
+    "invoke": "aws lambda invoke --function-name ${0} --cli-binary-format raw-in-base64-out --payload file://e2e/order.json ./e2e/response.json"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.159",
+    "tsx": "^4.20.6",
+    "typescript": "^5.5.3"
+  },
+  "private": true,
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.937.0"
+  }
+}
